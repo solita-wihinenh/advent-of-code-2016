@@ -64,18 +64,7 @@ type keyCount struct {
 	count int
 }
 
-func isRealRoom(r room) bool {
-	dict := map[rune]int{}
-	for _, key := range r.encryptedName {
-		for _, char := range key {
-			if _, ok := dict[char]; ok {
-				dict[char]++
-			} else {
-				dict[char] = 1
-			}
-		}
-	}
-
+func getSortedKeyCounts(dict map[rune]int) []keyCount {
 	var keyCounts []keyCount
 	for char, count := range dict {
 		keyCounts = append(keyCounts, keyCount{char, count})
@@ -89,6 +78,22 @@ func isRealRoom(r room) bool {
 		}
 		return keyCounts[first].key < keyCounts[second].key
 	})
+	return keyCounts
+}
+
+func isRealRoom(r room) bool {
+	dict := map[rune]int{}
+	for _, key := range r.encryptedName {
+		for _, char := range key {
+			if _, ok := dict[char]; ok {
+				dict[char]++
+			} else {
+				dict[char] = 1
+			}
+		}
+	}
+
+	keyCounts := getSortedKeyCounts(dict)
 
 	for i, checksumChar := range r.checksum {
 		if keyCounts[i].key != checksumChar {
