@@ -4,98 +4,40 @@ import (
 	"testing"
 )
 
-func TestSupportTLSSample1(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"abba", "qrst"},
-		Hypernets: []string{"mnop"},
+func TestSupportTLS(t *testing.T) {
+	cases := []struct {
+		in   Ipv7
+		want bool
+	}{
+		{Ipv7{[]string{"abba", "qrst"}, []string{"mnop"}}, true},
+		{Ipv7{[]string{"abcd", "xyyx"}, []string{"bddb"}}, false},
+		{Ipv7{[]string{"aaaa", "tyui"}, []string{"qwer"}}, false},
+		{Ipv7{[]string{"ioxxoj", "zxcvbn"}, []string{"asdfgh"}}, true},
 	}
-	got := data.SupportsTLS()
-	want := true
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
+
+	for _, c := range cases {
+		got := c.in.SupportsTLS()
+		if got != c.want {
+			t.Errorf("%v got = %v; want %v", c.in, got, c.want)
+		}
 	}
 }
 
-func TestSupportTLSSample2(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"abcd", "xyyx"},
-		Hypernets: []string{"bddb"},
+func TestSupportsSSL(t *testing.T) {
+	cases := []struct {
+		in   Ipv7
+		want bool
+	}{
+		{Ipv7{[]string{"aba", "xyz"}, []string{"bab"}}, true},
+		{Ipv7{[]string{"xyx", "xyx"}, []string{"xyx"}}, false},
+		{Ipv7{[]string{"aaa", "kek"}, []string{"eke"}}, true},
+		{Ipv7{[]string{"zazbz", "cdb"}, []string{"bzb"}}, true},
 	}
-	got := data.SupportsTLS()
-	want := false
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
-	}
-}
 
-func TestSupportTLSSample3(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"aaaa", "tyui"},
-		Hypernets: []string{"qwer"},
-	}
-	got := data.SupportsTLS()
-	want := false
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
-	}
-}
-
-func TestSupportsTLSSample4(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"ioxxoj", "zxcvbn"},
-		Hypernets: []string{"asdfgh"},
-	}
-	got := data.SupportsTLS()
-	want := true
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
-	}
-}
-
-func TestSupportsSSLSample1(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"aba", "xyz"},
-		Hypernets: []string{"bab"},
-	}
-	got := data.SupportsSSL()
-	want := true
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
-	}
-}
-
-func TestSupportsSSLSample2(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"xyx", "xyx"},
-		Hypernets: []string{"xyx"},
-	}
-	got := data.SupportsSSL()
-	want := false
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
-	}
-}
-
-func TestSupportsSSLSample3(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"aaa", "kek"},
-		Hypernets: []string{"eke"},
-	}
-	got := data.SupportsSSL()
-	want := true
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
-	}
-}
-
-func TestSupportsSSLSample4(t *testing.T) {
-	data := Ipv7{
-		Sequences: []string{"zazbz", "cdb"},
-		Hypernets: []string{"bzb"},
-	}
-	got := data.SupportsSSL()
-	want := true
-	if got != want {
-		t.Errorf("%v got = %v; want %v", data, got, want)
+	for _, c := range cases {
+		got := c.in.SupportsSSL()
+		if got != c.want {
+			t.Errorf("%v got = %v; want %v", c.in, got, c.want)
+		}
 	}
 }
