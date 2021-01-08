@@ -105,7 +105,6 @@ func loadData(filename string) []Ipv7 {
 	for scanner.Scan() {
 		data = append(data, parseIpv7(scanner.Text()))
 	}
-	check(err)
 	return data
 }
 
